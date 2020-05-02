@@ -14,6 +14,8 @@ import android.widget.TextView;
 public class MainActivity extends AppCompatActivity {
     Button startBtn;
     TextView txt;
+    public static final String BROADCAST_ACTION = "";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -24,14 +26,15 @@ public class MainActivity extends AppCompatActivity {
     }
     protected void onStart() {
         super.onStart();
-        localLisetner = new Reciever();
+        Reciever localLisetner = new Reciever();
         IntentFilter intentFilter=new IntentFilter(BROADCAST_ACTION);
-        this.registerReceiver(localListener,intentFilter);
+        this.registerReceiver(localLisetner,intentFilter);
     }
 
     protected void onStop(){
         super.onStop();
-        this.unregisterReceiver(localListener);
+        Reciever localLisetner = new Reciever();
+        this.unregisterReceiver(localLisetner);
     }
 
     public void onClick(View view){
@@ -44,10 +47,10 @@ public class MainActivity extends AppCompatActivity {
      public class Reciever extends BroadcastReceiver{
          @Override
          public void onReceive(Context context, Intent intent) {
-             String currentText=txtViewMsg.getText().toString();
+             String currentText=txt.getText().toString();
              String message = intent.getStringExtra("value");
              currentText += "\nRecieved " +message;
-             txtViewMsg.setText(currentText);
+             txt.setText(currentText);
          }
      }
     
